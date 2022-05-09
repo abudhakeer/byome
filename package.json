@@ -2,6 +2,7 @@
   "name": "byome",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://0xsuk.github.io/byome",
   "dependencies": {
     "@codemirror/state": "^0.19.9",
     "@codemirror/view": "^0.19.47",
