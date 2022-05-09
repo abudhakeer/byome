@@ -1,7 +1,5 @@
 * {
-
  margin: 0;
-  
 }
 
 #app {
@@ -10,7 +8,7 @@
 
 #editor {
   width: 50%;
-  border-left: solid 1px #eee;
+  font-size: 15px;
 }
 
 #previewer {
