@@ -76,17 +76,15 @@ function App() {
   const inputRef = useRef(null);
   return (
     <>
-      <div id="buttons">
-        <button onClick={downloadFile}>Save</button>
-        <input
-          type="file"
-          ref={inputRef}
-          style={{ display: "none" }}
-          onChange={handleFileOpen}
-        />
-        <button onClick={() => inputRef.current.click()}>Open file</button>
-        {fileName && <p>File name: {fileName}</p>}
-      </div>
+      <button onClick={downloadFile}>Save</button>
+      <input
+        type="file"
+        ref={inputRef}
+        style={{ display: "none" }}
+        onChange={handleFileOpen}
+      />
+      <button onClick={() => inputRef.current.click()}>Open file</button>
+      {fileName && <p>File name: {fileName}</p>}
       <div id="app">
         <div id="editor"></div>
         <div id="previewer">{md}</div>
