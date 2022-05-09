@@ -1,0 +1,18 @@
+* {
+
+ margin: 0;
+  
+}
+
+#app {
+  display: flex;
+}
+
+#editor {
+  width: 50%;
+  border-left: solid 1px #eee;
+}
+
+#previewer {
+  width: 50%;
+}
