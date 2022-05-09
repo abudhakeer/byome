@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.62cbb5de.css","mappings":"AAAA,EACC,QACD,CAEA,KACE,YACF,CAEA,QAEE,cACF,CAEA,mBAJE,SAMF","sources":["App.css"],"sourcesContent":["* {\n margin: 0;\n}\n\n#app {\n  display: flex;\n}\n\n#editor {\n  width: 50%;\n  font-size: 15px;\n}\n\n#previewer {\n  width: 50%;\n}\n"],"names":[],"sourceRoot":""}
