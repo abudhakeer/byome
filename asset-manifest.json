@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/byome/static/css/main.27a9172a.css",
-    "main.js": "/byome/static/js/main.e77b650e.js",
+    "main.css": "/byome/static/css/main.18c81554.css",
+    "main.js": "/byome/static/js/main.27b8719c.js",
     "index.html": "/byome/index.html",
-    "main.27a9172a.css.map": "/byome/static/css/main.27a9172a.css.map",
-    "main.e77b650e.js.map": "/byome/static/js/main.e77b650e.js.map"
+    "main.18c81554.css.map": "/byome/static/css/main.18c81554.css.map",
+    "main.27b8719c.js.map": "/byome/static/js/main.27b8719c.js.map"
   },
   "entrypoints": [
-    "static/css/main.27a9172a.css",
-    "static/js/main.e77b650e.js"
+    "static/css/main.18c81554.css",
+    "static/js/main.27b8719c.js"
   ]
 }
