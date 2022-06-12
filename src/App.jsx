@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react/lib";
 import useCodemirror from "./useCodemirror";
+import "github-markdown-css/github-markdown.css";
 
 let treeData;
 

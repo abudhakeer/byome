@@ -29,7 +29,10 @@
   border-left: solid 1px #ddd;
   overflow-x: hidden;
   overflow-y: auto;
-  * {
-    overflow-x: auto;
-  }
+  background-color: white;
+  color: black;
+}
+
+#preview * {
+  overflow-x: auto;
 }
