@@ -6,12 +6,12 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react/lib";
 import useCodemirror from "./useCodemirror";
-import "github-markdown-css/github-markdown.css";
+import "github-markdown-css/github-markdown-light.css";
 
 let treeData;
 
 function App() {
-  const [doc, setDoc] = useState("#Hello byome");
+  const [doc, setDoc] = useState("# Hello byome");
   const [editorRef, editorView] = useCodemirror({ initialDoc: doc, setDoc });
   const mouseIsOn = useRef(null);
 

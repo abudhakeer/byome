@@ -22,17 +22,17 @@
   overflow-y: auto;
 }
 #preview {
-  font-size: 14px; {/*make it same as codemirror */}
+  font-size: 14px; /*make it same as codemirror */
   height: 100%;
   flex: 0 0 50%;
   padding: 0 0 0 12px;
   border-left: solid 1px #ddd;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: white;
-  color: black;
 }
 
 #preview * {
   overflow-x: auto;
 }
+
+
