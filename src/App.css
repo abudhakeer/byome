@@ -1,16 +1,35 @@
 * {
- margin: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+  
+
+#root {
+  height: 100vh;
+  overflow: hidden;
 }
 
-#app {
+#editor-wrapper {
+  height: 100%;
   display: flex;
 }
 
-#editor {
-  width: 50%;
-  font-size: 15px;
-}
 
-#previewer {
-  width: 50%;
+#markdown {
+  height: 100%;
+  flex: 0 0 50%;
+  padding: 0 12px 0 0;
+  overflow-y: auto;
+}
+#preview {
+  font-size: 14px; {/*make it same as codemirror */}
+  height: 100%;
+  flex: 0 0 50%;
+  padding: 0 0 0 12px;
+  border-left: solid 1px #ddd;
+  overflow-x: hidden;
+  overflow-y: auto;
+  * {
+    overflow-x: auto;
+  }
 }

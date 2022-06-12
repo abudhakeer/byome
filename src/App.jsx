@@ -1,93 +1,137 @@
-import { useState, createElement, Fragment, useEffect, useRef } from "react";
+import { useState, createElement, Fragment, useRef } from "react";
 import "./App.css";
 import { unified } from "unified";
 import remarkParse from "remark-parse/lib";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react/lib";
-import { EditorState } from "@codemirror/state";
-import { EditorView } from "@codemirror/view";
+import useCodemirror from "./useCodemirror";
+
+let treeData;
 
 function App() {
-  const [doc, setDoc] = useState("# Hello byome");
-  const [editorView, setEditorView] = useState(null);
-  const [fileName, setFileName] = useState(null);
+  const [doc, setDoc] = useState("#Hello byome");
+  const [editorRef, editorView] = useCodemirror({ initialDoc: doc, setDoc });
+  const mouseIsOn = useRef(null);
 
-  const editorExtensions = [
-    EditorView.updateListener.of((update) => {
-      if (update.changes) {
-        setDoc(update.state.doc.toString());
+  const defaultPlugin = () => (tree) => {
+    treeData = tree; //treeData length corresponds to previewer's childNodes length
+    return tree;
+  };
+
+  const markdownElem = document.getElementById("markdown");
+  const previewElem = document.getElementById("preview");
+
+  const computeElemsOffsetTop = () => {
+    let markdownChildNodesOffsetTopList = [];
+    let previewChildNodesOffsetTopList = [];
+
+    treeData.children.forEach((child, index) => {
+      if (child.type !== "element" || child.position === undefined) return;
+
+      const pos = child.position.start.offset;
+      const lineInfo = editorView.lineBlockAt(pos);
+      const offsetTop = lineInfo.top;
+      markdownChildNodesOffsetTopList.push(offsetTop);
+      previewChildNodesOffsetTopList.push(
+        previewElem.childNodes[index].offsetTop -
+          previewElem.getBoundingClientRect().top //offsetTop from the top of preview
+      );
+    });
+
+    return [markdownChildNodesOffsetTopList, previewChildNodesOffsetTopList];
+  };
+  const handleMdScroll = () => {
+    console.log(mouseIsOn.current);
+    if (mouseIsOn.current !== "markdown") {
+      return;
+    }
+    const [markdownChildNodesOffsetTopList, previewChildNodesOffsetTopList] =
+      computeElemsOffsetTop();
+    let scrollElemIndex;
+    for (let i = 0; markdownChildNodesOffsetTopList.length > i; i++) {
+      if (markdownElem.scrollTop < markdownChildNodesOffsetTopList[i]) {
+        scrollElemIndex = i - 1;
+        break;
       }
-    }),
-  ];
+    }
+
+    if (
+      markdownElem.scrollTop >=
+      markdownElem.scrollHeight - markdownElem.clientHeight //true when scroll reached the bottom
+    ) {
+      previewElem.scrollTop =
+        previewElem.scrollHeight - previewElem.clientHeight; //scroll to the bottom
+      return;
+    }
+
+    if (scrollElemIndex >= 0) {
+      let ratio =
+        (markdownElem.scrollTop -
+          markdownChildNodesOffsetTopList[scrollElemIndex]) /
+        (markdownChildNodesOffsetTopList[scrollElemIndex + 1] -
+          markdownChildNodesOffsetTopList[scrollElemIndex]);
+      previewElem.scrollTop =
+        ratio *
+          (previewChildNodesOffsetTopList[scrollElemIndex + 1] -
+            previewChildNodesOffsetTopList[scrollElemIndex]) +
+        previewChildNodesOffsetTopList[scrollElemIndex];
+    }
+  };
+
+  const handlePreviewScroll = () => {
+    if (mouseIsOn.current !== "preview") {
+      return;
+    }
+    const [markdownChildNodesOffsetTopList, previewChildNodesOffsetTopList] =
+      computeElemsOffsetTop();
+    let scrollElemIndex;
+    for (let i = 0; previewChildNodesOffsetTopList.length > i; i++) {
+      if (previewElem.scrollTop < previewChildNodesOffsetTopList[i]) {
+        scrollElemIndex = i - 1;
+        break;
+      }
+    }
+
+    if (scrollElemIndex >= 0) {
+      let ratio =
+        (previewElem.scrollTop -
+          previewChildNodesOffsetTopList[scrollElemIndex]) /
+        (previewChildNodesOffsetTopList[scrollElemIndex + 1] -
+          previewChildNodesOffsetTopList[scrollElemIndex]);
+      markdownElem.scrollTop =
+        ratio *
+          (markdownChildNodesOffsetTopList[scrollElemIndex + 1] -
+            markdownChildNodesOffsetTopList[scrollElemIndex]) +
+        markdownChildNodesOffsetTopList[scrollElemIndex];
+    }
+  };
 
   const md = unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkRehype)
+    .use(defaultPlugin)
     .use(rehypeReact, { createElement, Fragment })
     .processSync(doc).result;
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", (e) => {
-      e.returnValue = "";
-    });
-
-    const startState = EditorState.create({
-      doc,
-      extensions: editorExtensions,
-    });
-
-    setEditorView(
-      new EditorView({
-        state: startState,
-        parent: document.getElementById("editor"),
-      })
-    );
-  }, []);
-
-  const handleFileOpen = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setDoc(ev.target.result);
-      const newState = EditorState.create({
-        doc: ev.target.result,
-        extensions: editorExtensions,
-      });
-      editorView.setState(newState);
-    };
-    reader.readAsText(file);
-
-    setFileName(file.name);
-  };
-
-  const downloadFile = () => {
-    const b64doc = btoa(doc);
-    console.log(b64doc, doc);
-    const a = document.createElement("a");
-    const e = new MouseEvent("click");
-
-    a.download = fileName ? fileName : "doc.md";
-    a.href = "data:text/plain;base64," + b64doc;
-    a.dispatchEvent(e);
-  };
-
-  const inputRef = useRef(null);
   return (
     <>
-      <button onClick={downloadFile}>Save</button>
-      <input
-        type="file"
-        ref={inputRef}
-        style={{ display: "none" }}
-        onChange={handleFileOpen}
-      />
-      <button onClick={() => inputRef.current.click()}>Open file</button>
-      {fileName && <p>File name: {fileName}</p>}
-      <div id="app">
-        <div id="editor"></div>
-        <div id="previewer">{md}</div>
+      <div id="editor-wrapper">
+        <div
+          id="markdown"
+          ref={editorRef}
+          onScroll={handleMdScroll}
+          onMouseEnter={() => (mouseIsOn.current = "markdown")}
+        ></div>
+        <div
+          id="preview"
+          className="markdown-body"
+          onScroll={handlePreviewScroll}
+          onMouseEnter={() => (mouseIsOn.current = "preview")}
+        >
+          {md}
+        </div>
       </div>
     </>
   );
