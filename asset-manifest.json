@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/byome/static/css/main.27a9172a.css",
+    "main.js": "/byome/static/js/main.e77b650e.js",
+    "index.html": "/byome/index.html",
+    "main.27a9172a.css.map": "/byome/static/css/main.27a9172a.css.map",
+    "main.e77b650e.js.map": "/byome/static/js/main.e77b650e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.27a9172a.css",
+    "static/js/main.e77b650e.js"
+  ]
+}
