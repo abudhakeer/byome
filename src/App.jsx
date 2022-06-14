@@ -7,6 +7,8 @@ import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react/lib";
 import useCodemirror from "./useCodemirror";
 import "github-markdown-css/github-markdown-light.css";
+import remarkMath from "remark-math";
+import rehypeMathJaxSvg from "rehype-mathjax";
 
 let treeData;
 
@@ -111,8 +113,10 @@ function App() {
   const md = unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkMath)
     .use(remarkRehype)
     .use(defaultPlugin)
+    .use(rehypeMathJaxSvg)
     .use(rehypeReact, { createElement, Fragment })
     .processSync(doc).result;
 
