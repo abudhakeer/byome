@@ -13,7 +13,7 @@ import rehypeMathJaxSvg from "rehype-mathjax";
 let treeData;
 
 function App() {
-  const [doc, setDoc] = useState("# Hello byome");
+  const [doc, setDoc] = useState("# Hello world");
   const [editorRef, editorView] = useCodemirror({ initialDoc: doc, setDoc });
   const mouseIsOn = useRef(null);
 
@@ -49,8 +49,10 @@ function App() {
     if (mouseIsOn.current !== "markdown") {
       return;
     }
-    const [markdownChildNodesOffsetTopList, previewChildNodesOffsetTopList] =
-      computeElemsOffsetTop();
+    const [
+      markdownChildNodesOffsetTopList,
+      previewChildNodesOffsetTopList,
+    ] = computeElemsOffsetTop();
     let scrollElemIndex;
     for (let i = 0; markdownChildNodesOffsetTopList.length > i; i++) {
       if (markdownElem.scrollTop < markdownChildNodesOffsetTopList[i]) {
@@ -86,8 +88,10 @@ function App() {
     if (mouseIsOn.current !== "preview") {
       return;
     }
-    const [markdownChildNodesOffsetTopList, previewChildNodesOffsetTopList] =
-      computeElemsOffsetTop();
+    const [
+      markdownChildNodesOffsetTopList,
+      previewChildNodesOffsetTopList,
+    ] = computeElemsOffsetTop();
     let scrollElemIndex;
     for (let i = 0; previewChildNodesOffsetTopList.length > i; i++) {
       if (previewElem.scrollTop < previewChildNodesOffsetTopList[i]) {
